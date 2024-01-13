@@ -14,7 +14,7 @@ def RGB(event, x, y, flags, param):
 cv2.namedWindow('RGB')
 cv2.setMouseCallback('RGB', RGB)
 
-cap=cv2.VideoCapture('video4.mp4')
+cap=cv2.VideoCapture('video6.mp4')
 
 my_file = open("coco.txt", "r")
 data = my_file.read()
@@ -22,8 +22,8 @@ class_list = data.split("\n")
 #print(class_list)
 count=0
 tracker=Tracker()
-cy1=323
-cy2=367
+cy1=260
+cy2=156
 offset=6
 vh_down = {}
 counter = [] 
@@ -58,7 +58,7 @@ while True:
         if 'car' or 'truck' in c:
             list.append([x1,y1,x2,y2])
     bbox_id=tracker.update(list)
-#box created when vehicle detected
+    
     for bbox in bbox_id:
         x3,y3,x4,y4,id=bbox
         cx=int(x3+x4)//2
@@ -66,7 +66,7 @@ while True:
 
         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
 
-        #for going down
+        #for going up
         if cy1 < (cy + offset) and cy1 > (cy - offset):
             vh_down[id] = time.time() #to get the current time when the veh touches line1
         if id in vh_down:
@@ -88,7 +88,7 @@ while True:
                 cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1)
                 cv2.putText(frame,str(int(a_speed_kh)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
                 
-        #going up       
+        #going down      
         if cy2 < (cy + offset) and cy2 > (cy - offset):
             vh_up[id] = time.time()
         if id in vh_up:
@@ -109,14 +109,14 @@ while True:
                 cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1) 
                 cv2.putText(frame,str(int(a_speed_kh1)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
                     
-    cv2.line(frame,(267,cy1),(814,cy1),(255,0,0),3)
-    cv2.line(frame,(167,cy2),(932,cy2),(255,0,0),3)
+    cv2.line(frame,(100,cy1),(800,cy1),(255,0,0),3)
+    cv2.line(frame,(167,cy2),(680,cy2),(255,0,0),3)
     d = (len(counter))
-    cv2.putText(frame,('Going Down:') + str(d),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
+    cv2.putText(frame,('Going up:') + str(d),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,133,150),2)
 
     #For going up
     u = (len(counter1))
-    cv2.putText(frame,('Going up:') + str(u),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
+    cv2.putText(frame,('Going down:') + str(u),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
 
     os =len(vh_overspeeding)
     cv2.putText(frame,'Overspeeding:' + str(os),(380,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),2)
