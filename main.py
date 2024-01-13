@@ -112,7 +112,7 @@ while True:
     cv2.line(frame,(100,cy1),(800,cy1),(255,0,0),3)
     cv2.line(frame,(167,cy2),(680,cy2),(255,0,0),3)
     d = (len(counter))
-    cv2.putText(frame,('Going up:') + str(d),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,133,150),2)
+    cv2.putText(frame,('Going up:') + str(d),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
 
     #For going up
     u = (len(counter1))
