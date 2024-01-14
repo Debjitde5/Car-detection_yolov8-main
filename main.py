@@ -3,6 +3,10 @@ import pandas as pd
 from ultralytics import YOLO
 from tracker import*
 import time
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import api
 from math import dist
 
 model = YOLO('yolov8s.pt')
@@ -14,9 +18,8 @@ def RGB(event, x, y, flags, param):
         
 cv2.namedWindow('RGB')
 cv2.setMouseCallback('RGB', RGB)
-
-cap=cv2.VideoCapture('video6.mp4')
-
+path='video6.mp4'
+cap=cv2.VideoCapture(path)
 my_file = open("coco.txt", "r")
 data = my_file.read()
 class_list = data.split("\n") 
@@ -30,6 +33,15 @@ cy2=156
 offset=6
 distance=15
 spd_lim=40
+car_down=0
+car_up=0
+car_spd=0
+bus_down=0
+bus_up=0
+bus_spd=0
+truck_down=0
+truck_up=0
+truck_spd=0
 #car
 upcar = {}
 downcar={}
@@ -49,6 +61,33 @@ countertruckup= []
 countertruckdown = []
 countertruck_ovrspeeding = []
 a_speed_kh=0
+
+def mail(c_up,c_dwn,c_spd,b_up,b_dwn,b_spd,t_up,t_dwn,t_spd):
+    # Email configuration
+    sender_email = "palshubho2020@gmail.com"
+    sender_password = api.mailpasskey
+    receiver_email = "shubhodippal01@gmail.com"
+    subject = "Traffic Details"
+    car = "Total number of car:"+str(c_up+c_dwn)+"\nUpwards Car:"+str(c_up)+"\nDownwards Car:"+str(c_dwn)+"\nOver Speeding car:"+str(c_spd)
+    bus = "\nTotal number of bus:"+str(b_up+b_dwn)+"\nUpwards Car:"+str(b_up)+"\nDownwards Car:"+str(b_dwn)+"\nOver Speeding car:"+str(b_spd)
+    truck = "\nTotal number of truck:"+str(t_up+t_dwn)+"\nUpwards Car:"+str(t_up)+"\nDownwards Car:"+str(t_dwn)+"\nOver Speeding car:"+str(t_spd)
+    content = car+bus+truck
+    # Create a MIME object
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = receiver_email
+    message["Subject"] = subject
+    # Attach the concatenated string
+    body = MIMEText(content)
+    message.attach(body)
+    # Connect to the SMTP server (in this case, Gmail's SMTP server)
+    with smtplib.SMTP("smtp.gmail.com", 587) as server:
+        server.starttls()
+        server.login(sender_email, sender_password)
+        # Send the email
+        server.sendmail(sender_email, receiver_email, message.as_string())
+        server.close()
+
 while True:    
     ret,frame = cap.read()
     if not ret:
@@ -85,12 +124,13 @@ while True:
     bbox_idc=trackerc.update(listc)
     bbox_idb=trackerb.update(listb)
     bbox_idt=trackert.update(listt)
-
+    #car
     for bbox in bbox_idc:
         x3,y3,x4,y4,id=bbox
         cx=int(x3+x4)//2
         cy=int(y3+y4)//2
         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
+        cv2.putText(frame,"car",(x3,y3),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1)
         #for car going up
         if cy1 < (cy + offset) and cy1 > (cy - offset):
             upcar[id] = time.time() #to get the current time when the veh touches line1
@@ -109,7 +149,7 @@ while True:
                         countercar_ovrspeeding.append(id)
                     else:
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(205,120,0),2)
-                cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1)
+                #cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1)
                 cv2.putText(frame,str(int(a_speed_kh)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)      
         #car going down      
         if cy2 < (cy + offset) and cy2 > (cy - offset):
@@ -128,15 +168,15 @@ while True:
                         countercar_ovrspeeding.append(id)
                     else:
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
-                cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1) 
+                #cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1) 
                 cv2.putText(frame,str(int(a_speed_kh1)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
-
-    
+    #bus
     for bbox in bbox_idb:
         x3,y3,x4,y4,id=bbox
         cx=int(x3+x4)//2
         cy=int(y3+y4)//2
         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
+        cv2.putText(frame,"bus",(x3,y3),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1)
         #for bus going up
         if cy1 < (cy + offset) and cy1 > (cy - offset):
             upbus[id] = time.time() #to get the current time when the veh touches line1
@@ -155,7 +195,7 @@ while True:
                         counterbus_ovrspeeding.append(id)
                     else:
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
-                cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1)
+                #cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1)
                 cv2.putText(frame,str(int(a_speed_kh)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)        
         #bus going down      
         if cy2 < (cy + offset) and cy2 > (cy - offset):
@@ -174,15 +214,15 @@ while True:
                         counterbus_ovrspeeding.append(id)
                     else:
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
-                cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1) 
+                #cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1) 
                 cv2.putText(frame,str(int(a_speed_kh1)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
-
-    
+    #truck
     for bbox in bbox_idt:
         x3,y3,x4,y4,id=bbox
         cx=int(x3+x4)//2
         cy=int(y3+y4)//2
         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
+        cv2.putText(frame,"truck",(x3,y3),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1)
         #for truck going up
         if cy1 < (cy + offset) and cy1 > (cy - offset):
             uptruck[id] = time.time() #to get the current time when the veh touches line1
@@ -201,7 +241,7 @@ while True:
                         countertruck_ovrspeeding.append(id)
                     else:
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
-                cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1)
+                #cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1)
                 cv2.putText(frame,str(int(a_speed_kh)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)       
         #truck going down      
         if cy2 < (cy + offset) and cy2 > (cy - offset):
@@ -220,7 +260,7 @@ while True:
                         countertruck_ovrspeeding.append(id)
                     else:
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
-                cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1) 
+                #cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1) 
                 cv2.putText(frame,str(int(a_speed_kh1)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)                                
           
     cv2.line(frame,(100,cy1),(800,cy1),(255,0,0),3)
@@ -257,7 +297,20 @@ while True:
     cv2.putText(frame,'Truck Overspeeding:' + str(truck_spd),(10,90),cv2.FONT_HERSHEY_COMPLEX,0.7,(0,0,255),2)
 
     cv2.imshow("RGB", frame)
-    if cv2.waitKey(1)&0xFF==27:
-        break
+    cv2.waitKey(1)#&0xFF==27:
+        #break
+    if path==0:
+        #live footage
+        start_time = time.time()
+        end_time = time.time()
+        t_time = (end_time - start_time)/60
+        if elapsed_time == 60:
+            mail(c_up=car_up,c_dwn=car_down,c_spd=car_spd,b_up=bus_up,b_dwn=bus_down,b_spd=bus_spd,t_up=truck_up,t_dwn=truck_down,t_spd=truck_spd)
+            start_time=0
+            end_time=0
+            t_time=0
+
+mail(c_up=car_up,c_dwn=car_down,c_spd=car_spd,b_up=bus_up,b_dwn=bus_down,b_spd=bus_spd,t_up=truck_up,t_dwn=truck_down,t_spd=truck_spd)
+
 cap.release()
 cv2.destroyAllWindows()
