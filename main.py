@@ -81,7 +81,6 @@ while True:
             listt.append([x1,y1,x2,y2])
                     
     bbox_idc=trackerc.update(listc)
-
     for bbox in bbox_idc:
         x3,y3,x4,y4,id=bbox
         cx=int(x3+x4)//2
@@ -133,10 +132,14 @@ while True:
                 cv2.putText(frame,str(int(a_speed_kh1)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
 
     bbox_idb=trackerb.update(listb)
-    bbox_idt=trackert.update(listt)
-    
-    
-        #for bus going up
+    for bbox in bbox_idb:
+        x3,y3,x4,y4,id=bbox
+        cx=int(x3+x4)//2
+        cy=int(y3+y4)//2
+
+        cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
+
+    #for bus going up
         if cy1 < (cy + offset) and cy1 > (cy - offset):
             upbus[id] = time.time() #to get the current time when the veh touches line1
         if id in upbus:
@@ -179,7 +182,14 @@ while True:
                 cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1) 
                 cv2.putText(frame,str(int(a_speed_kh1)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
 
-        #for truck going up
+    bbox_idt=trackert.update(listt)
+    for bbox in bbox_idt:
+        x3,y3,x4,y4,id=bbox
+        cx=int(x3+x4)//2
+        cy=int(y3+y4)//2
+
+        cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
+    #for truck going up
         if cy1 < (cy + offset) and cy1 > (cy - offset):
             uptruck[id] = time.time() #to get the current time when the veh touches line1
         if id in uptruck:
