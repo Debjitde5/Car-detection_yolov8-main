@@ -73,13 +73,11 @@ while True:
         y2=int(row[3])
         d=int(row[5])
         c=class_list[d]
-        b=class_list[d]
-        t=class_list[d]
         if 'car' in c:
             listc.append([x1,y1,x2,y2])
-        elif 'bus' in b:
+        elif 'bus' in c:
             listb.append([x1,y1,x2,y2])
-        elif 'truck' in t:
+        elif 'truck' in c:
             listt.append([x1,y1,x2,y2])
                     
     bbox_id=trackerc.update(listc)
