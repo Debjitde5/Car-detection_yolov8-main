@@ -81,13 +81,14 @@ while True:
             listt.append([x1,y1,x2,y2])
                     
     bbox_idc=trackerc.update(listc)
+    bbox_idb=trackerb.update(listb)
+    bbox_idt=trackert.update(listt)
+
     for bbox in bbox_idc:
         x3,y3,x4,y4,id=bbox
         cx=int(x3+x4)//2
         cy=int(y3+y4)//2
-
         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
-
         #for car going up
         if cy1 < (cy + offset) and cy1 > (cy - offset):
             upcar[id] = time.time() #to get the current time when the veh touches line1
@@ -108,8 +109,7 @@ while True:
                     else:
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(205,120,0),2)
                 cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1)
-                cv2.putText(frame,str(int(a_speed_kh)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
-                
+                cv2.putText(frame,str(int(a_speed_kh)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)      
         #car going down      
         if cy2 < (cy + offset) and cy2 > (cy - offset):
             downcar[id] = time.time()
@@ -131,15 +131,13 @@ while True:
                 cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1) 
                 cv2.putText(frame,str(int(a_speed_kh1)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
 
-    bbox_idb=trackerb.update(listb)
+    
     for bbox in bbox_idb:
         x3,y3,x4,y4,id=bbox
         cx=int(x3+x4)//2
         cy=int(y3+y4)//2
-
         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
-
-    #for bus going up
+        #for bus going up
         if cy1 < (cy + offset) and cy1 > (cy - offset):
             upbus[id] = time.time() #to get the current time when the veh touches line1
         if id in upbus:
@@ -159,8 +157,7 @@ while True:
                     else:
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
                 cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1)
-                cv2.putText(frame,str(int(a_speed_kh)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
-                
+                cv2.putText(frame,str(int(a_speed_kh)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)        
         #bus going down      
         if cy2 < (cy + offset) and cy2 > (cy - offset):
             downbus[id] = time.time()
@@ -182,14 +179,13 @@ while True:
                 cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1) 
                 cv2.putText(frame,str(int(a_speed_kh1)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
 
-    bbox_idt=trackert.update(listt)
+    
     for bbox in bbox_idt:
         x3,y3,x4,y4,id=bbox
         cx=int(x3+x4)//2
         cy=int(y3+y4)//2
-
         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
-    #for truck going up
+        #for truck going up
         if cy1 < (cy + offset) and cy1 > (cy - offset):
             uptruck[id] = time.time() #to get the current time when the veh touches line1
         if id in uptruck:
@@ -209,8 +205,7 @@ while True:
                     else:
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
                 cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1)
-                cv2.putText(frame,str(int(a_speed_kh)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
-                
+                cv2.putText(frame,str(int(a_speed_kh)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)       
         #truck going down      
         if cy2 < (cy + offset) and cy2 > (cy - offset):
             downtruck[id] = time.time()
@@ -231,47 +226,39 @@ while True:
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
                 cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1) 
                 cv2.putText(frame,str(int(a_speed_kh1)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)                                
-               
+          
     cv2.line(frame,(100,cy1),(800,cy1),(255,0,0),3)
     cv2.line(frame,(167,cy2),(680,cy2),(255,0,0),3)
+    #car
+    #going down
     d = (len(countercardown))
     cv2.putText(frame,('Going down:') + str(d),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
-
     #For going up
     u = (len(countercarup))
     cv2.putText(frame,('Going up:') + str(u),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
-
+    #over speeding
     os =len(countercar_ovrspeeding)
     cv2.putText(frame,'Overspeeding:' + str(os),(380,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),2)
-
-
-    print(countercardown)
-
+    #bus
+    #going down
     d = (len(counterbusdown))
     cv2.putText(frame,('Going down:') + str(d),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
-
     #For going up
     u = (len(counterbusup))
     cv2.putText(frame,('Going up:') + str(u),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
-
+    #over speeding
     os =len(counterbus_ovrspeeding)
     cv2.putText(frame,'Overspeeding:' + str(os),(380,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),2)
-
-
-    print(counterbusdown)
-    
+    #truck
+    #going down
     d = (len(countertruckdown))
     cv2.putText(frame,('Going down:') + str(d),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
-
     #For going up
     u = (len(countertruckup))
     cv2.putText(frame,('Going up:') + str(u),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
-
+    #overspeeding
     os =len(countertruck_ovrspeeding)
     cv2.putText(frame,'Overspeeding:' + str(os),(380,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),2)
-
-
-    print(countertruckdown)
 
     cv2.imshow("RGB", frame)
     if cv2.waitKey(1)&0xFF==27:
