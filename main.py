@@ -80,11 +80,9 @@ while True:
         elif 'truck' in c:
             listt.append([x1,y1,x2,y2])
                     
-    bbox_id=trackerc.update(listc)
-    bbox_id=trackerb.update(listb)
-    bbox_id=trackert.update(listt)
-    
-    for bbox in bbox_id:
+    bbox_idc=trackerc.update(listc)
+
+    for bbox in bbox_idc:
         x3,y3,x4,y4,id=bbox
         cx=int(x3+x4)//2
         cy=int(y3+y4)//2
@@ -134,6 +132,10 @@ while True:
                 cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1) 
                 cv2.putText(frame,str(int(a_speed_kh1)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
 
+    bbox_idb=trackerb.update(listb)
+    bbox_idt=trackert.update(listt)
+    
+    
         #for bus going up
         if cy1 < (cy + offset) and cy1 > (cy - offset):
             upbus[id] = time.time() #to get the current time when the veh touches line1
