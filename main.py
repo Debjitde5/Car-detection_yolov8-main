@@ -139,7 +139,7 @@ while True:
         #for bus going up
         if cy1 < (cy + offset) and cy1 > (cy - offset):
             upbus[id] = time.time() #to get the current time when the veh touches line1
-        if id in upcar:
+        if id in upbus:
             if cy2 < (cy + offset) and cy2 > (cy - offset):
                 #here time.time() is the current time when veh touches L2
                 elapsed_time = time.time() - upbus[id] #to get the time in the area 
@@ -221,20 +221,48 @@ while True:
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,255,0),2)
                 cv2.putText(frame,str(id),(cx,cy),cv2.FONT_HERSHEY_COMPLEX,0.6,(0,255,255),1) 
                 cv2.putText(frame,str(int(a_speed_kh1)) + 'Km/h',(x4, y4),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)                                
-                    
+               
     cv2.line(frame,(100,cy1),(800,cy1),(255,0,0),3)
     cv2.line(frame,(167,cy2),(680,cy2),(255,0,0),3)
-    d = (len(counter))
-    cv2.putText(frame,('Going up:') + str(d),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
+    d = (len(countercardown))
+    cv2.putText(frame,('Going down:') + str(d),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
 
     #For going up
-    u = (len(counter1))
-    cv2.putText(frame,('Going down:') + str(u),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
+    u = (len(countercarup))
+    cv2.putText(frame,('Going up:') + str(u),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
 
-    os =len(vh_overspeeding)
+    os =len(countercar_ovrspeeding)
     cv2.putText(frame,'Overspeeding:' + str(os),(380,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),2)
 
-    print(counter)
+
+    print(countercardown)
+
+    d = (len(counterbusdown))
+    cv2.putText(frame,('Going down:') + str(d),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
+
+    #For going up
+    u = (len(counterbusup))
+    cv2.putText(frame,('Going up:') + str(u),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
+
+    os =len(counterbus_ovrspeeding)
+    cv2.putText(frame,'Overspeeding:' + str(os),(380,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),2)
+
+
+    print(counterbusdown)
+    
+    d = (len(countertruckdown))
+    cv2.putText(frame,('Going down:') + str(d),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
+
+    #For going up
+    u = (len(countertruckup))
+    cv2.putText(frame,('Going up:') + str(u),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
+
+    os =len(countertruck_ovrspeeding)
+    cv2.putText(frame,'Overspeeding:' + str(os),(380,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),2)
+
+
+    print(countertruckdown)
+
     cv2.imshow("RGB", frame)
     if cv2.waitKey(1)&0xFF==27:
         break
