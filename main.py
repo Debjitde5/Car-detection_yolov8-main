@@ -28,6 +28,8 @@ trackert=Tracker()
 cy1=260
 cy2=156
 offset=6
+distance=15
+spd_lim=40
 #car
 upcar = {}
 downcar={}
@@ -98,11 +100,10 @@ while True:
                 elapsed_time = time.time() - upcar[id] #to get the time in the area 
                 if countercarup.count(id) == 0: #to resolve retative count
                     countercarup.append(id)
-                    distance = 10
                     a_speed_ms = distance / elapsed_time
                     a_speed_kh = a_speed_ms * 3.6
                     cv2.circle(frame,(cx,cy),4,(0,0,255),-1)
-                    if(a_speed_kh>40):
+                    if(a_speed_kh>spd_lim):
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,0,255),2)
                         cv2.putText(frame,("Overspeeding"),(cx-50,cy-50),cv2.FONT_HERSHEY_COMPLEX,1,(0,255,255),2)
                         countercar_ovrspeeding.append(id)
@@ -118,11 +119,10 @@ while True:
                 elapsed1_time = time.time() - downcar[id]
                 if countercardown.count(id) == 0:
                     countercardown.append(id)
-                    distance1 = 10 #metersl
-                    a_speed_ms1 = distance1 / elapsed1_time
+                    a_speed_ms1 = distance / elapsed1_time
                     a_speed_kh1 = a_speed_ms1 * 3.6
                     cv2.circle(frame,(cx,cy),4,(0,0,255),-1)
-                    if(a_speed_kh1>40):
+                    if(a_speed_kh1>spd_lim):
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,0,255),2)
                         cv2.putText(frame,("Overspeeding"),(cx-50,cy-50),cv2.FONT_HERSHEY_COMPLEX,1,(0,255,255),3)
                         countercar_ovrspeeding.append(id)
@@ -146,11 +146,10 @@ while True:
                 elapsed_time = time.time() - upbus[id] #to get the time in the area 
                 if counterbusup.count(id) == 0: #to resolve retative count
                     counterbusup.append(id)
-                    distance = 10
                     a_speed_ms = distance / elapsed_time
                     a_speed_kh = a_speed_ms * 3.6
                     cv2.circle(frame,(cx,cy),4,(0,0,255),-1)
-                    if(a_speed_kh>40):
+                    if(a_speed_kh>spd_lim):
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,0,255),2)
                         cv2.putText(frame,("Overspeeding"),(cx-50,cy-50),cv2.FONT_HERSHEY_COMPLEX,1,(0,255,255),2)
                         counterbus_ovrspeeding.append(id)
@@ -166,11 +165,10 @@ while True:
                 elapsed1_time = time.time() - downbus[id]
                 if counterbusdown.count(id) == 0:
                     counterbusdown.append(id)
-                    distance1 = 10 #metersl
-                    a_speed_ms1 = distance1 / elapsed1_time
+                    a_speed_ms1 = distance / elapsed1_time
                     a_speed_kh1 = a_speed_ms1 * 3.6
                     cv2.circle(frame,(cx,cy),4,(0,0,255),-1)
-                    if(a_speed_kh1>40):
+                    if(a_speed_kh1>spd_lim):
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,0,255),2)
                         cv2.putText(frame,("Overspeeding"),(cx-50,cy-50),cv2.FONT_HERSHEY_COMPLEX,1,(0,255,255),3)
                         counterbus_ovrspeeding.append(id)
@@ -194,11 +192,10 @@ while True:
                 elapsed_time = time.time() - uptruck[id] #to get the time in the area 
                 if countertruckup.count(id) == 0: #to resolve retative count
                     countertruckup.append(id)
-                    distance = 10
                     a_speed_ms = distance / elapsed_time
                     a_speed_kh = a_speed_ms * 3.6
                     cv2.circle(frame,(cx,cy),4,(0,0,255),-1)
-                    if(a_speed_kh>40):
+                    if(a_speed_kh>spd_lim):
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,0,255),2)
                         cv2.putText(frame,("Overspeeding"),(cx-50,cy-50),cv2.FONT_HERSHEY_COMPLEX,1,(0,255,255),2)
                         countertruck_ovrspeeding.append(id)
@@ -214,11 +211,10 @@ while True:
                 elapsed1_time = time.time() - downtruck[id]
                 if countertruckdown.count(id) == 0:
                     countertruckdown.append(id)
-                    distance1 = 10 #metersl
-                    a_speed_ms1 = distance1 / elapsed1_time
+                    a_speed_ms1 = distance / elapsed1_time
                     a_speed_kh1 = a_speed_ms1 * 3.6
                     cv2.circle(frame,(cx,cy),4,(0,0,255),-1)
-                    if(a_speed_kh1>40):
+                    if(a_speed_kh1>spd_lim):
                         cv2.rectangle(frame,(x3,y3),(x4,y4),(0,0,255),2)
                         cv2.putText(frame,("Overspeeding"),(cx-50,cy-50),cv2.FONT_HERSHEY_COMPLEX,1,(0,255,255),3)
                         countertruck_ovrspeeding.append(id)
@@ -265,4 +261,3 @@ while True:
         break
 cap.release()
 cv2.destroyAllWindows()
-
