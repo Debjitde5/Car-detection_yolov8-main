@@ -21,15 +21,30 @@ data = my_file.read()
 class_list = data.split("\n") 
 #print(class_list)
 count=0
-tracker=Tracker()
+trackerc=Tracker()
+trackerb=Tracker()
+trackert=Tracker()
 cy1=260
 cy2=156
 offset=6
-vh_down = {}
-counter = [] 
-counter1 = []
-vh_up = {}
-vh_overspeeding = []
+#car
+upcar = {}
+downcar={}
+countercarup= [] 
+countercardown = []
+countercar_ovrspeeding = []
+#bus
+upbus = {}
+downbus={}
+counterbusup= [] 
+counterbusdown = []
+counterbus_ovrspeeding = []
+#truck
+uptruck = {}
+downtruck={}
+countertruckup= [] 
+countertruckdown = []
+countertruck_ovrspeeding = []
 a_speed_kh=0
 while True:    
     ret,frame = cap.read()
@@ -45,7 +60,9 @@ while True:
     a=results[0].boxes.data
     px=pd.DataFrame(a).astype("float")
 #    print(px)
-    list=[]        
+    listc=[]
+    listb=[]
+    listt=[]        
     
     for index,row in px.iterrows():
 #        print(row)
@@ -55,8 +72,13 @@ while True:
         y2=int(row[3])
         d=int(row[5])
         c=class_list[d]
-        if 'car' or 'truck' in c:
-            list.append([x1,y1,x2,y2])
+        if 'car' in c:
+            listc.append([x1,y1,x2,y2])
+        elif 'bus' in c:
+            listb.append([x1,y1,x2,y2])
+        elif 'truck' in c:
+            listt.append([x1,y1,x2,y2])
+                    
     bbox_id=tracker.update(list)
     
     for bbox in bbox_id:
