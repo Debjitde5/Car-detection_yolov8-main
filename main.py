@@ -231,34 +231,34 @@ while True:
     cv2.line(frame,(167,cy2),(680,cy2),(255,0,0),3)
     #car
     #going down
-    d = (len(countercardown))
-    cv2.putText(frame,('Going down:') + str(d),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
+    car_down = (len(countercardown))
+    cv2.putText(frame,('Going down:') + str(car_down),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
     #For going up
-    u = (len(countercarup))
-    cv2.putText(frame,('Going up:') + str(u),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
+    car_up = (len(countercarup))
+    cv2.putText(frame,('Going up:') + str(car_up),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
     #over speeding
-    os =len(countercar_ovrspeeding)
-    cv2.putText(frame,'Overspeeding:' + str(os),(380,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),2)
+    car_spd =len(countercar_ovrspeeding)
+    cv2.putText(frame,'Overspeeding:' + str(car_spd),(380,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),2)
     #bus
     #going down
-    d = (len(counterbusdown))
-    cv2.putText(frame,('Going down:') + str(d),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
+    bus_down = (len(counterbusdown))
+    cv2.putText(frame,('Going down:') + str(bus_down),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
     #For going up
-    u = (len(counterbusup))
-    cv2.putText(frame,('Going up:') + str(u),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
+    bus_up = (len(counterbusup))
+    cv2.putText(frame,('Going up:') + str(bus_up),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
     #over speeding
-    os =len(counterbus_ovrspeeding)
-    cv2.putText(frame,'Overspeeding:' + str(os),(380,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),2)
+    bus_spd =len(counterbus_ovrspeeding)
+    cv2.putText(frame,'Overspeeding:' + str(bus_spd),(380,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),2)
     #truck
     #going down
-    d = (len(countertruckdown))
-    cv2.putText(frame,('Going down:') + str(d),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
+    truck_down = (len(countertruckdown))
+    cv2.putText(frame,('Going down:') + str(truck_down),(60,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
     #For going up
-    u = (len(countertruckup))
-    cv2.putText(frame,('Going up:') + str(u),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
+    truck_up = (len(countertruckup))
+    cv2.putText(frame,('Going up:') + str(truck_up),(60,130),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,255),2)
     #overspeeding
-    os =len(countertruck_ovrspeeding)
-    cv2.putText(frame,'Overspeeding:' + str(os),(380,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),2)
+    truck_spd =len(countertruck_ovrspeeding)
+    cv2.putText(frame,'Overspeeding:' + str(truck_spd),(380,40),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),2)
 
     cv2.imshow("RGB", frame)
     if cv2.waitKey(1)&0xFF==27:
